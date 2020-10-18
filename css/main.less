@@ -1,0 +1,180 @@
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name {
+    @arguments();
+  }
+  @-webkit-keyframes @name {
+    @arguments();
+  }
+  @keyframes @name {
+    @arguments();
+  }
+}
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
+}
+
+.prefix(@prop,@val) {
+  -webkit-@{prop}: @val;
+  -moz-@{prop}: @val;
+  @{prop}: @val;
+}
+
+html {
+  background: #000;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+  min-width: 320px;
+  position: relative;
+  line-height: 1.6;
+  font-family: 'Source Sans Pro', "RobotoRegular", sans-serif;
+  overflow-x: hidden;
+}
+
+/**  Основные стили */
+
+.wrapper{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index:3;
+  .animation(fade-start 10s linear forwards);
+}
+.hookah{
+  background: url('../img/8.png') no-repeat;
+  width: 398px;
+  height: 700px;
+  background-size: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity:0;
+  .prefix(transform, translate(-50%, -50%));
+  .animation(zoom 1s linear 10s forwards);
+
+}
+
+.background{
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index:-2;
+
+  & > #main,
+  & > #smoke {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index:-1;
+    .animation(fade-in 66s linear infinite);
+  }
+
+  & > #smoke{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    .animation(fade-end 7s linear);
+    opacity:0;
+  }
+
+  & > .after__loader{
+    font: 700 5em/1.2 'Source Sans Pro', sans-serif;
+    color: transparent;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    position: absolute;
+    .prefix(transform, translate(-50%, -50%));
+    .animation(position 10s step-end);
+    top: -100%;
+    left: -100%;
+
+    & > .letter{
+      display: inline-block;
+      opacity: 0;
+      text-shadow: 0 0 0 whitesmoke;
+      -webkit-animation: rotate-y 2s linear forwards, smoky 4s both;
+      -moz-animation: rotate-y 2s linear forwards, smoky 4s both;
+      animation: rotate-y 2s linear forwards, smoky 4s both;
+
+      &:nth-child(1){animation-delay: 1.5s, 5.5s;}
+      &:nth-child(2){animation-delay: 1.8s, 5.8s;}
+      &:nth-child(3){animation-delay: 2.1s, 6.1s;}
+      &:nth-child(4){animation-delay: 2.4s, 6.4s;}
+      &:nth-child(5){animation-delay: 2.7s, 6.7s;}
+      &:nth-child(6){animation-delay: 3.0s, 7.0s;}
+    }
+  }
+}
+
+
+.keyframes(fade-start; {
+  0%, 80% { opacity: 0; }
+  100% { opacity: 1; }
+});
+
+.keyframes(fade-in; {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+});
+
+.keyframes(fade-end; {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+});
+
+.keyframes(rotate-y; {
+  0% {
+    opacity: 0;
+    .prefix(transform, rotateY(-90deg));
+    filter: blur(0.5rem);
+   }
+  100% {
+    opacity: 1;
+    .prefix(transform, rotateY(0deg));
+    filter: blur(0);
+   }
+});
+
+.keyframes(position; {
+  0% {
+    top:50%;
+    left:50%;
+  }
+  100% {
+    top:-100%;
+    left:-100%;
+  }
+});
+
+.keyframes(smoky; {
+  60% {
+    text-shadow: 0 0 50px whitesmoke;
+  }
+  100% {
+    .prefix(transform, translate3d(15rem, -8rem, 0) rotate(-30deg) skewX(70deg));
+    text-shadow: 0 0 20px whitesmoke;
+    opacity: 0;
+  }
+});
+
+.keyframes(zoom; {
+  0% {
+    opacity:0;
+    .prefix(transform, translate(-50%, -50%) scale(1.2));
+    filter: blur(0.25rem);
+  }
+  100% {
+    opacity:1;
+    .prefix(transform, translate(-50%, -50%) scale(1));
+    filter: blur(0rem);
+  }
+});
